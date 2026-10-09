@@ -1,0 +1,55 @@
+# ---------------------------------------------------------------------------
+#  Optional path for users who already have Docker.
+#
+#  THIS IS NOT THE PRIMARY RUN PATH. The primary path is:
+#
+#      python run_all.py
+#
+#  which starts its own PostgreSQL 16 via `pgserver` and needs no Docker at all.
+#
+#  To use this file instead:
+#
+#      docker compose up -d
+#      # wait for "database system is ready to accept connections"
+#      set DATABASE_URL=postgresql://postgres:postgres@localhost:5432/retail
+#      python run_all.py
+#
+#  `src/db.py` picks up DATABASE_URL automatically and skips pgserver.
+# ---------------------------------------------------------------------------
+services:
+  postgres:
+    image: postgres:16
+    container_name: retail-sql-analytics-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: retail
+      # Deterministic collation so string ordering in reports is reproducible.
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=C"
+    ports:
+      # Host port 5432 by default. If something already listens there, change the
+      # left-hand side (e.g. "5433:5432") and update DATABASE_URL to match.
+      - "5432:5432"
+    volumes:
+      - retail_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d retail"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    command:
+      # Modest tuning for a bulk analytical load.
+      - "postgres"
+      - "-c"
+      - "shared_buffers=256MB"
+      - "-c"
+      - "work_mem=64MB"
+      - "-c"
+      - "maintenance_work_mem=256MB"
+      - "-c"
+      - "max_wal_size=1GB"
+
+volumes:
+  retail_pgdata:
+    name: retail_sql_analytics_pgdata

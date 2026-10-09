@@ -1,0 +1,18 @@
+# Core data stack -- versions pinned to the environment this project was built
+# and verified against (Python 3.11).
+pandas==3.0.6
+numpy==2.1.0
+
+# PostgreSQL driver (raw connections, COPY, RealDictCursor)
+psycopg2-binary==2.9.13
+
+# SQLAlchemy is available for anyone who wants an ORM/engine on top of the same
+# database; the shipped pipeline itself uses psycopg2 directly.
+SQLAlchemy==2.0.35
+
+# Embedded PostgreSQL 16 server -- lets `python run_all.py` work with no Docker,
+# no service and no prior PostgreSQL installation.
+pgserver==0.1.4
+
+# Reads the full UCI dataset (Online Retail.xlsx)
+openpyxl==3.1.5

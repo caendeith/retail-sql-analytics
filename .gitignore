@@ -1,0 +1,43 @@
+# ---- data: never commit the raw dataset or the embedded database ----------
+data/raw/
+.pgdata/
+
+# ---- python ---------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.pyc
+*.pyo
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+env/
+.python-version
+
+# ---- notebooks / tooling --------------------------------------------------
+.ipynb_checkpoints/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# ---- editors / os ---------------------------------------------------------
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---- environment ----------------------------------------------------------
+.env
+.env.*
+!.env.example
+
+# NOTE: data/sample/online_retail_sample.csv IS committed on purpose -- it is a
+# small subset that lets the project run without downloading anything.
+# NOTE: reports/query_results/*.csv and reports/sql_report.md ARE committed on
+# purpose -- they are the checked-in evidence of a real run.
